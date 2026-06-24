@@ -244,7 +244,9 @@ class ScrapliCfgIOSXEBase:
         """
 
         if re.search(r"^banner\s+\S+.*\^C|^\^C$", config, re.MULTILINE):
-            # ETX character in a banner config needs to be handled on device while writing file, preprocessing in python in not possible
+            # ETX character in a banner config needs to be handled on device while writing file
+            # preprocessing in python in not possible
+
             # Replace ^C with placeholder
             config = re.sub(r"(^banner\s+\S+.*)\^C|(^\^C$)", r"\1ETX", config, flags=re.MULTILINE)
             # Set ETX character and replace placeholder in config
@@ -253,7 +255,9 @@ class ScrapliCfgIOSXEBase:
             tclsh_end_file = "}]"
             final_config = "\n".join((tclsh_set_var, tclsh_start_file, config, tclsh_end_file))
         else:
-            tclsh_start_file = f'puts [open "{self.filesystem}{self.candidate_config_filename}" w+] {{'
+            tclsh_start_file = (
+                f'puts [open "{self.filesystem}{self.candidate_config_filename}" w+] {{'
+            )
             tclsh_end_file = "}"
             final_config = "\n".join((tclsh_start_file, config, tclsh_end_file))
 
